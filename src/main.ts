@@ -4,6 +4,9 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 
+// Set CESIUM_BASE_URL
+(window as any).CESIUM_BASE_URL = '/assets/cesium/';
+
 if (environment.production) {
   enableProdMode();
 }

@@ -1,0 +1,131 @@
+/* Ensure the Cesium container retains its styling */
+#cesiumContainer {
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    background: transparent;
+    /* Ensure Cesium background is visible */
+}
+
+/* Upper Left: Latest World News */
+.latest-news {
+    position: absolute;
+    top: 50px;
+    left: 10px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    width: 300px;
+    z-index: 10;
+    /* Ensure it stays above the Cesium canvas */
+}
+
+/* News Styling */
+.latest-news h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #0044cc;
+}
+
+.latest-news ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.latest-news li {
+    margin-bottom: 8px;
+}
+
+.latest-news li a {
+    text-decoration: none;
+    color: #0044cc;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.latest-news li a:hover {
+    color: #ff6600;
+}
+
+/* Lower Left: Detailed Article */
+.article-details {
+    position: absolute;
+    bottom: 40px;
+    left: 10px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    width: 300px;
+    height: 200px;
+    overflow-y: auto;
+    z-index: 10;
+    /* Stays above Cesium canvas */
+}
+
+.article-details h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #0044cc;
+}
+
+.article-details p {
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* Lower Right: User Login */
+/* Lower Right: User Login Section */
+.user-login {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background-color: rgba(255, 255, 255, 0.7);  /* Semi-transparent background */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    padding: 10px 15px;
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Space between icons */
+    z-index: 10; /* Ensure it stays above Cesium canvas */
+  }
+  
+  /* Individual Icon Styles */
+  .user-icon, .login-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 68, 204, 0.2); /* Light blue background */
+    padding: 10px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .user-icon:hover, .login-icon:hover {
+    background-color: rgba(0, 68, 204, 0.4); /* Darker blue on hover */
+  }
+  
+  .user-icon i, .login-icon i {
+    margin-right: 8px; /* Space between icon and text */
+    font-size: 24px; /* Larger icon */
+    color: #0044cc;
+  }
+  
+  .user-icon span, .login-icon span {
+    font-size: 16px;
+    color: #0044cc;
+  }
+  
+  /* Optional: Icon size adjustment */
+  .user-icon i, .login-icon i {
+    font-size: 20px; /* Adjust the size of the icons */
+  }
+  
