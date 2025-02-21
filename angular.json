@@ -23,12 +23,12 @@
               {
                 "glob": "**/*",
                 "input": "src/assets",
-                "output": "assets"
+                "output": "/assets"
               },
               {
                 "glob": "**/*",
-                "input": "node_modules/cesium/Build/Cesium/Assets",
-                "output": "assets/cesium"
+                "input": "node_modules/cesium/Build/Cesium",
+                "output": "/assets/cesium"
               }
             ],
             "styles": [

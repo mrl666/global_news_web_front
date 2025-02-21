@@ -1,8 +1,9 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Viewer, Cartesian3, Math as CesiumMath, createWorldTerrainAsync } from 'cesium';
-import { ScreenSpaceEventHandler, ScreenSpaceEventType, Ellipsoid, Cartographic } from 'cesium';
+import { ScreenSpaceEventHandler, ScreenSpaceEventType, Cartographic } from 'cesium';
 import { LabelCollection } from 'cesium';
 import * as Cesium from 'cesium';
+import { NewsService } from './news/services/news.service';
 
 @Component({
   selector: 'app-root',
@@ -12,6 +13,9 @@ import * as Cesium from 'cesium';
 export class AppComponent implements OnInit {
   viewer!: Viewer;
   labels!: LabelCollection;
+  newsArticles: any[] = [];
+
+  constructor(private newsService: NewsService) {}
 
   ngOnInit(): void {
     // Initialize Cesium Viewer with the terrain provider
@@ -27,139 +31,163 @@ export class AppComponent implements OnInit {
         selectionIndicator: false,
       });
 
-      // Set the initial camera position and orientation
       this.setInitialCameraView();
-
-      // Add arrows (billboards) to the globe
-      this.addArrows();
+      this.addClickListener();
+      this.enableRotation();
 
       // Configure the clock for rotation
-      this.viewer.clock.multiplier = 1000; // Controls the speed of Earth's rotation
-      this.viewer.clock.shouldAnimate = true; // Enables continuous animation
+      this.viewer.clock.multiplier = 1000;
+      this.viewer.clock.shouldAnimate = true;
     }).catch((error) => {
       console.error("Error loading terrain:", error);
     });
+
+    // Example: Fetch news for a default location on init
+    this.fetchNewsForLocation(40.7128, -74.0060); // New York coordinates
   }
 
   setInitialCameraView(): void {
-    // Ensure viewer is initialized before setting the camera position
     if (this.viewer) {
-      // Adjusted camera position and orientation
       this.viewer.camera.setView({
-        destination: Cartesian3.fromDegrees(-3.7038, 40.4168, 18000000),  // Longitude, Latitude, Height (balanced view)
+        destination: Cartesian3.fromDegrees(-3.7038, 40.4168, 20000000), // Adjusted height
         orientation: {
-          heading: CesiumMath.toRadians(0), // Facing north
-          pitch: CesiumMath.toRadians(-85), // Moderate downward tilt (adjusted)
-          roll: CesiumMath.toRadians(0) // No roll
+          heading: CesiumMath.toRadians(0),
+          pitch: CesiumMath.toRadians(-90), // More directly overhead
+          roll: CesiumMath.toRadians(0)
         }
       });
     }
   }
 
-
-  // Add arrow (billboards) at specific coordinates
-  addArrows(): void {
-    if (this.viewer) {
-      // Create a BillboardCollection to hold the arrows
-      const scene = this.viewer.scene;
-      const billboardCollection = scene.primitives.add(new Cesium.BillboardCollection());
-
-      // Define the locations for the arrows (geographical points)
-      const arrowLocations = [
-        { lon: -3.7038, lat: 40.4168, height: 10000000, text: 'Point 1' }, // Example: Madrid, Spain
-        { lon: -74.0060, lat: 40.7128, height: 10000000, text: 'Point 2' }, // Example: New York, USA
-      ];
-
-      // Create arrows at the defined locations
-      arrowLocations.forEach(location => {
-        const position = Cartesian3.fromDegrees(location.lon, location.lat, location.height);
-
-        billboardCollection.add({
-          image: 'https://upload.wikimedia.org/wikipedia/commons/a/a2/Arrow_up.svg', // You can replace this URL with any arrow image
-          position: position,
-          scale: 0.1, // Adjust the size of the arrow
-          id: location.text // Label the arrow
-        });
-
-        // Add a label for the arrow location
-        this.viewer.scene.primitives.add(new Cesium.LabelCollection()).add({
-          position: position,
-          text: location.text,
-          font: '18px Helvetica',
-          fillColor: Cesium.Color.WHITE,
-          style: Cesium.LabelStyle.FILL_AND_OUTLINE,
-          outlineWidth: 2,
-          pixelOffset: new Cesium.Cartesian2(0, -20)
-        });
-      });
-    }
-  }
-
-  ngAfterViewInit(): void {
-    this.viewer = new Viewer('cesiumContainer', {
-      animation: false,
-      timeline: false
-    });
-
-    this.addClickListener();
-
-    // Ensure viewer is initialized before setting the camera position
-    if (this.viewer) {
-      // Adjusted camera position and orientation
-      this.viewer.camera.setView({
-        destination: Cartesian3.fromDegrees(-3.7038, 40.4168, 20000000),  // Longitude, Latitude, Height (balanced view)
-        orientation: {
-          heading: CesiumMath.toRadians(0), // Facing north
-          pitch: CesiumMath.toRadians(-90), // Moderate downward tilt (adjusted)
-          roll: CesiumMath.toRadians(0) // No roll
+  async getLocationDetails(latitude: number, longitude: number): Promise<{
+    country: string;
+    city?: string;
+    state?: string;
+  }> {
+    try {
+      // Add a random number to prevent caching
+      const timestamp = new Date().getTime();
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?` +
+        `format=json&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1&` +
+        `_=${timestamp}`,
+        {
+          headers: {
+            'Accept-Language': 'en', // Get results in English
+            'User-Agent': 'CesiumGlobeApp/1.0' // Identify your application as per Nominatim's usage policy
+          }
         }
-      });
+      );
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      
+      return {
+        country: data.address.country || 'Unknown Country',
+        city: data.address.city || data.address.town || data.address.village,
+        state: data.address.state
+      };
+    } catch (error) {
+      console.error('Error fetching location details:', error);
+      return {
+        country: 'Error fetching location'
+      };
     }
-
-    // Enable rotation
-    this.enableRotation();
-
   }
 
   addClickListener(): void {
     const handler = new ScreenSpaceEventHandler(this.viewer.scene.canvas);
+    
+    // Add a simple loading indicator to the DOM
+    const loadingDiv = document.createElement('div');
+    loadingDiv.style.display = 'none';
+    loadingDiv.style.position = 'fixed';
+    loadingDiv.style.top = '50%';
+    loadingDiv.style.left = '50%';
+    loadingDiv.style.transform = 'translate(-50%, -50%)';
+    loadingDiv.style.padding = '10px';
+    loadingDiv.style.backgroundColor = 'rgba(0,0,0,0.7)';
+    loadingDiv.style.color = 'white';
+    loadingDiv.style.borderRadius = '5px';
+    loadingDiv.style.zIndex = '1000';
+    loadingDiv.textContent = 'Loading location details...';
+    document.body.appendChild(loadingDiv);
 
-    handler.setInputAction((event: { position: any; }) => {
-      // Get the position of the click in window coordinates
-      const windowPosition = event.position;
+    handler.setInputAction(async (event: { position: any; }) => {
+        const windowPosition = event.position;
+        const ray = this.viewer.camera.getPickRay(windowPosition);
+        
+        if (ray) {
+            const cartesian = this.viewer.scene.globe.pick(ray, this.viewer.scene);
+            
+            if (cartesian && !Cartesian3.ZERO.equals(cartesian)) {
+                const cartographic = Cartographic.fromCartesian(cartesian);
+                const longitude = CesiumMath.toDegrees(cartographic.longitude);
+                const latitude = CesiumMath.toDegrees(cartographic.latitude);
+                const height = cartographic.height;
 
-      // Use the pickPosition function to get the Cartesian3 coordinates
-      const cartesian = this.viewer.scene.pickPosition(windowPosition);
+                // Round coordinates
+                const roundedLon = Math.round(longitude * 10000) / 10000;
+                const roundedLat = Math.round(latitude * 10000) / 10000;
+                const roundedHeight = Math.round(height);
 
-      if (cartesian) {
-        // Convert Cartesian3 to Cartographic (longitude, latitude, height)
-        const cartographic = Cartographic.fromCartesian(cartesian, Ellipsoid.WGS84);
-        const longitude = CesiumMath.toDegrees(cartographic.longitude);
-        const latitude = CesiumMath.toDegrees(cartographic.latitude);
-        const height = cartographic.height;
+                // Show loading indicator
+                loadingDiv.style.display = 'block';
 
-        console.log(`Longitude: ${longitude}, Latitude: ${latitude}, Height: ${height}`);
-        alert(`Clicked Coordinates:\nLongitude: ${longitude}\nLatitude: ${latitude}\nHeight: ${height}`);
-      } else {
-        console.log('No position found.');
-      }
+                try {
+                    // Get location details
+                    const locationInfo = await this.getLocationDetails(roundedLat, roundedLon);
+
+                    // Build location message
+                    let locationMessage = `Location Details:\n`;
+                    locationMessage += `Country: ${locationInfo.country}\n`;
+                    if (locationInfo.state) {
+                        locationMessage += `State/Region: ${locationInfo.state}\n`;
+                    }
+                    if (locationInfo.city) {
+                        locationMessage += `City: ${locationInfo.city}\n`;
+                    }
+                    locationMessage += `Longitude: ${roundedLon}°\n`;
+                    locationMessage += `Latitude: ${roundedLat}°\n`;
+                    locationMessage += `Height: ${roundedHeight}m`;
+
+                    // Show the alert
+                    alert(locationMessage);
+                } finally {
+                    // Hide loading indicator
+                    loadingDiv.style.display = 'none';
+                }
+            }
+        }
     }, ScreenSpaceEventType.LEFT_CLICK);
   }
 
   enableRotation(): void {
     if (this.viewer) {
       const camera = this.viewer.camera;
+      const rotationSpeed = CesiumMath.toRadians(0.05);
   
-      // Speed of rotation in radians per frame
-      const rotationSpeed = CesiumMath.toRadians(0.05); // Adjust for desired rotation speed
-  
-      // Add a postRender event listener to perform rotation
       this.viewer.scene.postRender.addEventListener(() => {
-        // Rotate the camera around the Earth's vertical axis (UNIT_Z)
-        camera.rotate(Cartesian3.UNIT_Z, -rotationSpeed); // Negative for eastward rotation
+        camera.rotate(Cartesian3.UNIT_Z, -rotationSpeed);
       });
     }
   }
-  
 
+  fetchNewsForLocation(latitude: number, longitude: number) {
+    this.newsService.getNewsByCoordinates(latitude, longitude).subscribe(
+      (data: any) => {
+        this.newsArticles = data.articles;
+      },
+      (error: any) => {
+        console.error('Error fetching news:', error);
+        this.newsArticles = [{ title: 'Failed to fetch news. Please try again later.' }];
+      }
+    );
+  }
 }
+
+
+

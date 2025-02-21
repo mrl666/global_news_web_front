@@ -1,25 +1,27 @@
 <div id="cesiumContainer">
-    <!-- Upper Left: Latest World News -->
-    <div class="latest-news">
-      <h3>Latest World News</h3>
-      <ul>
-        <li><a href="#">News Headline 1</a></li>
-        <li><a href="#">News Headline 2</a></li>
-        <li><a href="#">News Headline 3</a></li>
-        <li><a href="#">News Headline 4</a></li>
-      </ul>
-    </div>
-  
-    <!-- Lower Left: Detailed Article -->
-    <div class="article-details">
-      <h3>Article Details</h3>
-      <p>Select a news headline to view detailed information here.</p>
-    </div>
-  
-    <!-- Lower Right: User Login Icons -->
-    <div class="login-icon">
-        <i class="fas fa-sign-in-alt"></i> <!-- Login icon -->
-        <span>Login</span>
+  <!-- Upper Left: Latest World News -->
+  <div class="latest-news">
+    <h3>Latest World News</h3>
+    <ul>
+      <div *ngFor="let article of newsArticles">
+        <li>
+          <h3>{{ article.title }}</h3>
+          <p>{{ article.description }}</p>
+          <a [href]="article.url" target="_blank">Read more</a>
+        </li>
       </div>
+    </ul>
   </div>
-  
+
+  <!-- Lower Left: Detailed Article -->
+  <div class="article-details">
+    <h3>Article Details</h3>
+    <p>Select a news headline to view detailed information here.</p>
+  </div>
+
+  <!-- Lower Right: User Login Icons -->
+  <div class="login-icon">
+    <i class="fas fa-sign-in-alt"></i> <!-- Login icon -->
+    <span>Login</span>
+  </div>
+</div>
