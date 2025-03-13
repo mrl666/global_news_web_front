@@ -6,34 +6,47 @@
   transform: translate(-50%, -50%);
   width: 100%;
   height: 100vh;
-  overflow: hidden; /* Prevent content from overflowing */
+  overflow: hidden;
+  /* Prevent content from overflowing */
 }
 
 /* General Styling */
-body { /* Or apply to a specific container */
-  font-family: 'Arial', sans-serif; /* Use a modern font */
-  color: #333; /* Darker text for better contrast */
+body {
+  /* Or apply to a specific container */
+  font-family: 'Arial', sans-serif;
+  /* Use a modern font */
+  color: #333;
+  /* Darker text for better contrast */
 }
 
 /* News Panel */
 .latest-news {
   position: absolute;
-  top: 50px;
+  top: 60px;
   left: 10px;
-  background-color: rgba(255, 255, 255, 0.95); /* Slightly less transparent */
-  border-radius: 10px; /* More rounded corners */
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Softer shadow */
-  padding: 20px; /* More padding */
-  width: 320px; /* Slightly wider */
+  background-color: rgba(255, 255, 255, 0.95);
+  /* Slightly less transparent */
+  border-radius: 10px;
+  /* More rounded corners */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  /* Softer shadow */
+  padding: 10px;
+  /* More padding */
+  width: 420px;
+  /* Slightly wider */
   z-index: 10;
-  backdrop-filter: blur(5px); /* Add a subtle blur */
+  backdrop-filter: blur(5px);
+  /* Add a subtle blur */
 }
 
 .latest-news h3 {
-  font-size: 20px; /* Larger heading */
+  font-size: 15px;
+  /* Larger heading */
   margin-bottom: 15px;
-  color: #0056b3; /* Darker blue */
-  font-weight: 600; /* Semi-bold */
+  color: #0056b3;
+  /* Darker blue */
+  font-weight: 600;
+  /* Semi-bold */
 }
 
 .latest-news ul {
@@ -48,48 +61,68 @@ body { /* Or apply to a specific container */
 
 .latest-news li a {
   text-decoration: none;
-  color: #0056b3; /* Darker blue */
-  font-weight: 500; /* Slightly less bold */
-  transition: color 0.3s ease, transform 0.2s ease; /* Add transform for hover */
-  display: block; /* Make list items fill the width */
-  padding: 5px 10px; /* Add some padding to the links */
-  border-radius: 5px; /* Round the link background */
+  color: #0056b3;
+  /* Darker blue */
+  font-weight: 500;
+  /* Slightly less bold */
+  transition: color 0.3s ease, transform 0.2s ease;
+  /* Add transform for hover */
+  display: block;
+  /* Make list items fill the width */
+  padding: 5px 10px;
+  /* Add some padding to the links */
+  border-radius: 5px;
+  /* Round the link background */
 }
 
 .latest-news li a:hover {
-  color: #007bff; /* Brighter blue on hover */
-  transform: translateX(5px); /* Slight slide on hover */
-  background-color: rgba(0, 86, 179, 0.1);  /* Subtle background on hover */
+  color: #007bff;
+  /* Brighter blue on hover */
+  transform: translateX(5px);
+  /* Slight slide on hover */
+  background-color: rgba(0, 86, 179, 0.1);
+  /* Subtle background on hover */
 }
 
 /* Article Details */
 .article-details {
   position: absolute;
-  bottom: 40px;
+  bottom: 10px;
   left: 10px;
-  background-color: rgba(255, 255, 255, 0.95); /* Slightly less transparent */
+  background-color: rgba(255, 255, 255, 0.95);
+  /* Slightly less transparent */
   border-radius: 10px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Softer shadow */
-  padding: 20px;
-  width: 320px; /* Match news panel width */
-  height: 220px; /* Slightly taller */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  /* Softer shadow */
+  padding: 10px;
+  width: 420px;
+  /* Match news panel width */
+  height: 220px;
+  /* Slightly taller */
   overflow-y: auto;
   z-index: 10;
-  backdrop-filter: blur(5px); /* Add a subtle blur */
+  backdrop-filter: blur(5px);
+  /* Add a subtle blur */
 }
 
 .article-details h3 {
-  font-size: 20px; /* Larger heading */
+  font-size: 15px;
+  /* Larger heading */
   margin-bottom: 15px;
-  color: #0056b3; /* Darker blue */
-  font-weight: 600; /* Semi-bold */
+  color: #0056b3;
+  /* Darker blue */
+  font-weight: 600;
+  /* Semi-bold */
 }
 
 .article-details p {
-  font-size: 16px; /* Slightly larger font */
-  line-height: 1.6; /* Better line height */
+  font-size: 16px;
+  /* Slightly larger font */
+  line-height: 1.6;
+  /* Better line height */
   margin: 0;
-  color: #444; /* Slightly darker text */
+  color: #444;
+  /* Slightly darker text */
 }
 
 /* User Login */
@@ -97,16 +130,22 @@ body { /* Or apply to a specific container */
   position: absolute;
   bottom: 10px;
   right: 10px;
-  background-color: rgba(255, 255, 255, 0.85); /* Less transparent */
-  border-radius: 12px; /* More rounded */
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Softer shadow */
+  background-color: rgba(255, 255, 255, 0.85);
+  /* Less transparent */
+  border-radius: 12px;
+  /* More rounded */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  /* Softer shadow */
   padding: 15px 20px;
-  width: 270px; /* Slightly wider */
+  width: 270px;
+  /* Slightly wider */
   display: flex;
   flex-direction: column;
-  gap: 12px; /* More spacing */
+  gap: 12px;
+  /* More spacing */
   z-index: 10;
-  backdrop-filter: blur(5px); /* Add a subtle blur */
+  backdrop-filter: blur(5px);
+  /* Add a subtle blur */
 }
 
 .user-icon,
@@ -114,34 +153,169 @@ body { /* Or apply to a specific container */
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(0, 86, 179, 0.15); /* Lighter blue background */
-  padding: 12px; /* More padding */
-  border-radius: 10px; /* More rounded */
-  transition: background-color 0.3s ease, transform 0.2s ease; /* Add transform */
+  background-color: rgba(0, 86, 179, 0.15);
+  /* Lighter blue background */
+  padding: 12px;
+  /* More padding */
+  border-radius: 10px;
+  /* More rounded */
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  /* Add transform */
   cursor: pointer;
 }
 
 .user-icon:hover,
 .login-icon:hover {
-  background-color: rgba(0, 86, 179, 0.25); /* Darker blue on hover */
-  transform: scale(1.05); /* Slight scale on hover */
+  background-color: rgba(0, 86, 179, 0.25);
+  /* Darker blue on hover */
+  transform: scale(1.05);
+  /* Slight scale on hover */
 }
 
 .user-icon i,
 .login-icon i {
   margin-right: 10px;
-  font-size: 22px; /* Slightly larger icon */
-  color: #0056b3; /* Darker blue */
+  font-size: 22px;
+  /* Slightly larger icon */
+  color: #0056b3;
+  /* Darker blue */
 }
 
 .user-icon span,
 .login-icon span {
   font-size: 16px;
-  color: #0056b3; /* Darker blue */
+  color: #0056b3;
+  /* Darker blue */
 }
 
 /* Optional: Icon size adjustment (if needed) */
 .user-icon i,
 .login-icon i {
   font-size: 24px;
+}
+
+.scrollable-container {
+  max-height: 500px;
+  /* Adjust height as needed */
+  overflow-y: auto;
+  /* Enable vertical scrolling */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  background-color: #f9f9f9;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  margin-bottom: 16px;
+  padding: 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.article-thumbnail {
+  max-width: 100%;
+  max-height: 100px;
+  /* Adjust this value to control the height */
+  object-fit: cover;
+  /* Ensures the image fills the space properly */
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+h3 {
+  margin: 0 0 8px;
+  font-size: 1.25rem;
+}
+
+p {
+  margin: 0 0 8px;
+  color: #555;
+}
+
+a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Read More Icon (Modal Trigger) */
+.modal-icon {
+  cursor: pointer;
+  font-size: 18px;
+  margin-left: 10px;
+}
+
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Modal */
+.modal {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 50%;
+  max-width: 500px;
+  position: relative;
+  text-align: center;
+}
+
+/* Close Button */
+.close-icon {
+  position: absolute;
+  top: 3px;
+  right: 5px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* Limit the modal image size */
+.modal-thumbnail {
+  max-width: 100%;
+  /* Ensure it does not exceed the modal width */
+  max-height: 200px;
+  /* Adjust this value to fit your design */
+  width: auto;
+  height: auto;
+  border-radius: 8px;
+  display: block;
+  margin: 0 auto;
+  /* Center the image */
+}
+
+/* Style for modal text */
+.modal-content p {
+  font-size: 18px;
+  /* Increase text size */
+  line-height: 1.6;
+  /* Improve readability */
+  font-weight: 500;
+  /* Make it slightly bold */
+  color: #333;
+  /* Darker text for better contrast */
+  text-align: justify;
+  /* Justify text for a clean look */
+  padding: 10px;
+  /* Add some spacing */
 }
