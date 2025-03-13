@@ -14,10 +14,16 @@ export class AppComponent implements OnInit {
   viewer!: Viewer;
   labels!: LabelCollection;
   newsArticles: any[] = [];
+  randomArticles: any[] = []; // Randomly selected articles
+  selectedArticle: any = null;
+  modalArticle: any = null;
 
   constructor(private newsService: NewsService) {}
 
   ngOnInit(): void {
+
+    Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJlMzI0ZmE4NS01ZGNlLTQyMjYtOTY2ZS00NmU3NDYyODA4YTAiLCJpZCI6MjgzNjA0LCJpYXQiOjE3NDE3ODEwODB9.EOLsNcGovIeFjEs-_1M70IXMIBiQTgMdB-0OY9pEaZk';
+
     // Initialize Cesium Viewer with the terrain provider
     createWorldTerrainAsync().then((terrainProvider) => {
       this.viewer = new Viewer('cesiumContainer', {
@@ -38,12 +44,31 @@ export class AppComponent implements OnInit {
       // Configure the clock for rotation
       this.viewer.clock.multiplier = 1000;
       this.viewer.clock.shouldAnimate = true;
+
+      // ✅ Now it's safe to access `scene`, `camera`, and `globe`
+      const scene = this.viewer.scene;
+      const camera = this.viewer.camera;
+      const globe = scene.globe;
+
+      let lastExecutionTime = 0;
+      const interval = 5000; // 5 seconds
+
+      this.viewer.clock.onTick.addEventListener(() => {
+        const currentTime = Date.now();
+        
+        if (currentTime - lastExecutionTime >= interval) {
+          lastExecutionTime = currentTime;
+          
+          const cartographic = globe.ellipsoid.cartesianToCartographic(camera.position);
+          const longitude = Cesium.Math.toDegrees(cartographic.longitude);
+          const latitude = Cesium.Math.toDegrees(cartographic.latitude);
+
+          this.fetchNewsForLocation(latitude, longitude);
+        }
+      });
     }).catch((error) => {
       console.error("Error loading terrain:", error);
     });
-
-    // Example: Fetch news for a default location on init
-    this.fetchNewsForLocation(40.7128, -74.0060); // New York coordinates
   }
 
   setInitialCameraView(): void {
@@ -154,8 +179,11 @@ export class AppComponent implements OnInit {
                     locationMessage += `Latitude: ${roundedLat}°\n`;
                     locationMessage += `Height: ${roundedHeight}m`;
 
+                    this.addNewsPulseEffect(roundedLat, roundedLon);
+                    this.fetchNewsForLocation(roundedLat, roundedLon);
                     // Show the alert
                     alert(locationMessage);
+
                 } finally {
                     // Hide loading indicator
                     loadingDiv.style.display = 'none';
@@ -179,14 +207,103 @@ export class AppComponent implements OnInit {
   fetchNewsForLocation(latitude: number, longitude: number) {
     this.newsService.getNewsByCoordinates(latitude, longitude).subscribe(
       (data: any) => {
-        this.newsArticles = data.articles;
+        if (data.articles && data.articles.length > 0) {
+          // Select 5 random articles
+          this.randomArticles = this.getRandomArticles(data.articles, 5);
+          this.addNewsPulseEffect(latitude, longitude);
+
+        } else {
+          console.warn("No news found, falling back to world news.");
+          this.fetchFallbackNews();
+        }
       },
       (error: any) => {
-        console.error('Error fetching news:', error);
-        this.newsArticles = [{ title: 'Failed to fetch news. Please try again later.' }];
+        console.error("Error fetching news:", error);
+        this.fetchFallbackNews();
       }
     );
   }
+  
+  fetchFallbackNews() {
+    const fallbackQuery = "World News"; // Can also use "New York News"
+    console.log(`Fetching fallback news for: ${fallbackQuery}`);
+  
+    this.newsService.getFallbackNews(fallbackQuery).subscribe(
+      (fallbackData: any) => {
+        this.randomArticles = this.getRandomArticles(fallbackData.articles, 5);
+      },
+      (fallbackError: any) => {
+        console.error("Error fetching fallback news:", fallbackError);
+        this.randomArticles = [{ title: "No news available at the moment." }];
+      }
+    );
+  }  
+
+    // Method to get random articles
+    getRandomArticles(articles: any[], count: number): any[] {
+      const shuffled = articles.sort(() => 0.5 - Math.random()); // Shuffle the array
+      return shuffled.slice(0, count); // Get the first `count` articles
+    }
+
+  // Show article details in `.article-details`
+  setSelectedArticle(article: any, event: Event) {
+    event.preventDefault(); // Prevents page reload
+    this.selectedArticle = article;
+  }
+
+  // Open modal
+  openModal(article: any, event: Event) {
+    event.preventDefault();
+    this.modalArticle = article;
+  }
+
+  // Close modal
+  closeModal(event: Event) {
+    this.modalArticle = null;
+  }
+
+  getFullText(article: any): string {
+    if (!article.content) {
+      return article.description || "No additional content available.";
+    }
+    return article.content.includes("[+") ? article.description || article.content : article.content;
+  }
+
+  addNewsPulseEffect(latitude: number, longitude: number) {
+    const viewer = this.viewer;
+    const position = Cesium.Cartesian3.fromDegrees(longitude, latitude);
+    
+    const startTime = Cesium.JulianDate.now(); // Ensure a valid start time
+  
+    // Create a pulsating wave effect
+    const entity = viewer.entities.add({
+      position: position,
+      ellipse: {
+        semiMinorAxis: new Cesium.CallbackProperty((time, result) => {
+          const currentTime = time ?? Cesium.JulianDate.now(); // Avoid undefined time
+          return 100000 + Math.sin(Cesium.JulianDate.secondsDifference(currentTime, startTime) * 3) * 50000;
+        }, false),
+        semiMajorAxis: new Cesium.CallbackProperty((time, result) => {
+          const currentTime = time ?? Cesium.JulianDate.now();
+          return 100000 + Math.sin(Cesium.JulianDate.secondsDifference(currentTime, startTime) * 3) * 50000;
+        }, false),
+        material: new Cesium.ColorMaterialProperty(
+          new Cesium.CallbackProperty((time, result) => {
+            const currentTime = time ?? Cesium.JulianDate.now();
+            const alpha = 0.6 - Math.abs(Math.sin(Cesium.JulianDate.secondsDifference(currentTime, startTime) * 3) * 0.6);
+            return Cesium.Color.RED.withAlpha(alpha);
+          }, false)
+        ),
+        height: 0, // Keep it at ground level
+      }
+    });
+  
+    // Remove the effect after 7 seconds (increase duration if needed)
+    setTimeout(() => {
+      viewer.entities.remove(entity);
+    }, 7000);
+  }
+
 }
 
 

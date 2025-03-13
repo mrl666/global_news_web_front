@@ -2,22 +2,59 @@
   <!-- Upper Left: Latest World News -->
   <div class="latest-news">
     <h3>Latest World News</h3>
-    <ul>
-      <div *ngFor="let article of newsArticles">
-        <li>
-          <h3>{{ article.title }}</h3>
-          <p>{{ article.description }}</p>
-          <a [href]="article.url" target="_blank">Read more</a>
-        </li>
-      </div>
-    </ul>
+    <div class="scrollable-container">
+      <ul>
+        <div *ngFor="let article of randomArticles">
+          <li>
+            <!-- Thumbnail Image -->
+            <img *ngIf="article.urlToImage" [src]="article.urlToImage" alt="{{ article.title }}"
+              class="article-thumbnail">
+
+            <!-- Article Title -->
+            <h3>{{ article.title }}</h3>
+
+            <!-- Article Description -->
+            <p>{{ article.description }}</p>
+
+            <!-- Read More Link -->
+            <a href="#" (click)="setSelectedArticle(article, $event)">Read more</a>
+          </li>
+        </div>
+      </ul>
+    </div>
   </div>
 
-  <!-- Lower Left: Detailed Article -->
+  <!-- Lower Left: Article Details (Always Visible) -->
   <div class="article-details">
     <h3>Article Details</h3>
-    <p>Select a news headline to view detailed information here.</p>
+    <div *ngIf="selectedArticle">
+      <img *ngIf="selectedArticle.urlToImage" [src]="selectedArticle.urlToImage" alt="{{ selectedArticle.title }}"
+        class="article-thumbnail">
+      <h4>{{ selectedArticle.title }}</h4>
+      <p>{{ selectedArticle.content || selectedArticle.description }}</p>
+
+      <a [href]="selectedArticle.url" target="_blank">View Full Article</a>
+      <!-- Icon to Open Modal (Now Inside article-details) -->
+      <span class="modal-icon" (click)="openModal(selectedArticle, $event)">📰 Open in Modal</span>
+    <p *ngIf="!selectedArticle">Select a news headline to view detailed information here.</p>
+    </div>
   </div>
+
+  <!-- Modal (Appears When Clicking the Icon) -->
+  <div class="modal-overlay" *ngIf="modalArticle" (click)="closeModal($event)">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <span class="close-icon" (click)="closeModal($event)">✖</span>
+      <h3>{{ modalArticle.title }}</h3>
+      <img *ngIf="modalArticle.urlToImage" [src]="modalArticle.urlToImage" alt="{{ modalArticle.title }}"
+        class="modal-thumbnail">
+        <p class="modal-content">
+          {{ getFullText(modalArticle) }}
+        </p>
+        
+      <a [href]="modalArticle.url" target="_blank">View Full Article</a>
+    </div>
+  </div>
+
 
   <!-- Lower Right: User Login Icons -->
   <div class="login-icon">
