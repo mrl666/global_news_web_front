@@ -22,11 +22,11 @@ body {
 /* News Panel */
 .latest-news {
   position: absolute;
-  top: 60px;
+  top: 10px;
   left: 10px;
   background-color: rgba(255, 255, 255, 0.95);
   /* Slightly less transparent */
-  border-radius: 10px;
+  border-radius: 5px;
   /* More rounded corners */
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
   /* Softer shadow */
@@ -87,17 +87,17 @@ body {
 /* Article Details */
 .article-details {
   position: absolute;
-  bottom: 10px;
+  bottom: 40px;
   left: 10px;
   background-color: rgba(255, 255, 255, 0.95);
   /* Slightly less transparent */
-  border-radius: 10px;
+  border-radius: 5px;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
   /* Softer shadow */
   padding: 10px;
   width: 420px;
   /* Match news panel width */
-  height: 220px;
+  height: 250px;
   /* Slightly taller */
   overflow-y: auto;
   z-index: 10;
@@ -125,73 +125,57 @@ body {
   /* Slightly darker text */
 }
 
-/* User Login */
-.user-login {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  background-color: rgba(255, 255, 255, 0.85);
-  /* Less transparent */
-  border-radius: 12px;
-  /* More rounded */
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-  /* Softer shadow */
-  padding: 15px 20px;
-  width: 270px;
-  /* Slightly wider */
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  /* More spacing */
-  z-index: 10;
-  backdrop-filter: blur(5px);
-  /* Add a subtle blur */
-}
-
-.user-icon,
 .login-icon {
+  position: fixed;
+  /* Ensures it's always in the same spot */
+  bottom: 10px;
+  /* Adjusts position at the bottom */
+  right: 60px;
+  /* Adjusts position on the right */
+  background: rgba(0, 0, 0, 0.7);
+  /* Adds a semi-transparent background */
+  color: white;
+  /* Makes text visible */
+  padding: 10px 15px;
+  border-radius: 5px;
   display: flex;
+  /* Aligns items in a row */
   align-items: center;
-  justify-content: center;
-  background-color: rgba(0, 86, 179, 0.15);
-  /* Lighter blue background */
-  padding: 12px;
-  /* More padding */
-  border-radius: 10px;
-  /* More rounded */
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  /* Add transform */
-  cursor: pointer;
+  gap: 8px;
+  /* Space between icon and text */
+  z-index: 1000;
+  /* Ensures it's on top of other elements */
 }
 
-.user-icon:hover,
+.login-icon .logo {
+  font-weight: bold;
+  color: #FFD700;
+  /* Gold color for the logo */
+}
+
 .login-icon:hover {
-  background-color: rgba(0, 86, 179, 0.25);
-  /* Darker blue on hover */
-  transform: scale(1.05);
-  /* Slight scale on hover */
+  background: #413b33;
+  /* Highlight on hover */
+  color: #000;
 }
 
-.user-icon i,
 .login-icon i {
-  margin-right: 10px;
-  font-size: 22px;
-  /* Slightly larger icon */
-  color: #0056b3;
-  /* Darker blue */
+  font-size: 20px;
 }
 
-.user-icon span,
-.login-icon span {
-  font-size: 16px;
-  color: #0056b3;
-  /* Darker blue */
+.default-article {
+  text-align: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  font-size: 1.2em;
 }
 
-/* Optional: Icon size adjustment (if needed) */
-.user-icon i,
-.login-icon i {
+.logo {
   font-size: 24px;
+  font-weight: bold;
+  color: #007BFF;
+  /* Blue color */
 }
 
 .scrollable-container {
@@ -200,7 +184,7 @@ body {
   overflow-y: auto;
   /* Enable vertical scrolling */
   border: 1px solid #ddd;
-  border-radius: 8px;
+  border-radius: 5px;
   padding: 16px;
   background-color: #f9f9f9;
 }
@@ -215,7 +199,7 @@ li {
   margin-bottom: 16px;
   padding: 16px;
   border: 1px solid #ddd;
-  border-radius: 8px;
+  border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -226,7 +210,7 @@ li {
   /* Adjust this value to control the height */
   object-fit: cover;
   /* Ensures the image fills the space properly */
-  border-radius: 8px;
+  border-radius: 5px;
   margin-bottom: 16px;
 }
 
@@ -274,7 +258,7 @@ a:hover {
 .modal {
   background: white;
   padding: 20px;
-  border-radius: 10px;
+  border-radius: 5px;
   width: 50%;
   max-width: 500px;
   position: relative;
@@ -298,7 +282,7 @@ a:hover {
   /* Adjust this value to fit your design */
   width: auto;
   height: auto;
-  border-radius: 8px;
+  border-radius: 5px;
   display: block;
   margin: 0 auto;
   /* Center the image */

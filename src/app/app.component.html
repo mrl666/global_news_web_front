@@ -24,21 +24,34 @@
     </div>
   </div>
 
-  <!-- Lower Left: Article Details (Always Visible) -->
-  <div class="article-details">
-    <h3>Article Details</h3>
-    <div *ngIf="selectedArticle">
-      <img *ngIf="selectedArticle.urlToImage" [src]="selectedArticle.urlToImage" alt="{{ selectedArticle.title }}"
-        class="article-thumbnail">
-      <h4>{{ selectedArticle.title }}</h4>
-      <p>{{ selectedArticle.content || selectedArticle.description }}</p>
+<!-- Lower Left: Article Details (Always Visible) -->
+<div class="article-details">
+  <h3>Article Details</h3>
 
-      <a [href]="selectedArticle.url" target="_blank">View Full Article</a>
-      <!-- Icon to Open Modal (Now Inside article-details) -->
-      <span class="modal-icon" (click)="openModal(selectedArticle, $event)">📰 Open in Modal</span>
-    <p *ngIf="!selectedArticle">Select a news headline to view detailed information here.</p>
-    </div>
+  <!-- If there's an article, show it -->
+  <div *ngIf="selectedArticle; else defaultContent">
+    <img *ngIf="selectedArticle.urlToImage" [src]="selectedArticle.urlToImage" 
+      alt="{{ selectedArticle.title }}" class="article-thumbnail">
+    <h4>{{ selectedArticle.title }}</h4>
+    <p>{{ selectedArticle.content || selectedArticle.description }}</p>
+
+    <a [href]="selectedArticle.url" target="_blank">View Full Article</a>
+
+    <!-- Icon to Open Modal -->
+    <span class="modal-icon" (click)="openModal(selectedArticle, $event)">📰 Open in Modal</span>
   </div>
+
+  <!-- Default Content: Shown if No Article is Selected -->
+  <ng-template #defaultContent>
+    <div class="default-article">
+      <div class="logo">
+        🌍 <span>GlobePulse News</span>
+      </div>
+      <p>Stay updated with the latest global news!</p>
+    </div>
+  </ng-template>
+</div>
+
 
   <!-- Modal (Appears When Clicking the Icon) -->
   <div class="modal-overlay" *ngIf="modalArticle" (click)="closeModal($event)">
@@ -47,10 +60,10 @@
       <h3>{{ modalArticle.title }}</h3>
       <img *ngIf="modalArticle.urlToImage" [src]="modalArticle.urlToImage" alt="{{ modalArticle.title }}"
         class="modal-thumbnail">
-        <p class="modal-content">
-          {{ getFullText(modalArticle) }}
-        </p>
-        
+      <p class="modal-content">
+        {{ getFullText(modalArticle) }}
+      </p>
+
       <a [href]="modalArticle.url" target="_blank">View Full Article</a>
     </div>
   </div>
@@ -60,5 +73,9 @@
   <div class="login-icon">
     <i class="fas fa-sign-in-alt"></i> <!-- Login icon -->
     <span>Login</span>
+    <div class="logo">
+      🌍 <span>GlobePulse News</span>
+    </div>
   </div>
+
 </div>
