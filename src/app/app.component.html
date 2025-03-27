@@ -1,7 +1,10 @@
 <div id="cesiumContainer">
   <!-- Upper Left: Latest World News -->
   <div class="latest-news">
-    <h3>Latest World News</h3>
+    <div class="news-header">
+      <h3>News As The World Turns</h3>
+      <div class="logo-header">🌍 <span>Orbital News</span></div>
+    </div>
     <div class="scrollable-container">
       <ul>
         <div *ngFor="let article of randomArticles">
@@ -24,33 +27,33 @@
     </div>
   </div>
 
-<!-- Lower Left: Article Details (Always Visible) -->
-<div class="article-details">
-  <h3>Article Details</h3>
+  <!-- Lower Left: Article Details (Always Visible) -->
+  <div class="article-details">
+    <h3>Article Details</h3>
 
-  <!-- If there's an article, show it -->
-  <div *ngIf="selectedArticle; else defaultContent">
-    <img *ngIf="selectedArticle.urlToImage" [src]="selectedArticle.urlToImage" 
-      alt="{{ selectedArticle.title }}" class="article-thumbnail">
-    <h4>{{ selectedArticle.title }}</h4>
-    <p>{{ selectedArticle.content || selectedArticle.description }}</p>
+    <!-- If there's an article, show it -->
+    <div *ngIf="selectedArticle; else defaultContent">
+      <img *ngIf="selectedArticle.urlToImage" [src]="selectedArticle.urlToImage" alt="{{ selectedArticle.title }}"
+        class="article-thumbnail">
+      <h4>{{ selectedArticle.title }}</h4>
+      <p>{{ selectedArticle.content || selectedArticle.description }}</p>
 
-    <a [href]="selectedArticle.url" target="_blank">View Full Article</a>
+      <a [href]="selectedArticle.url" target="_blank">View Full Article</a>
 
-    <!-- Icon to Open Modal -->
-    <span class="modal-icon" (click)="openModal(selectedArticle, $event)">📰 Open in Modal</span>
-  </div>
-
-  <!-- Default Content: Shown if No Article is Selected -->
-  <ng-template #defaultContent>
-    <div class="default-article">
-      <div class="logo">
-        🌍 <span>GlobePulse News</span>
-      </div>
-      <p>Stay updated with the latest global news!</p>
+      <!-- Icon to Open Modal -->
+      <span class="modal-icon" (click)="openModal(selectedArticle, $event)">📰 Open in Modal</span>
     </div>
-  </ng-template>
-</div>
+
+    <!-- Default Content: Shown if No Article is Selected -->
+    <ng-template #defaultContent>
+      <div class="default-article">
+        <div class="logo">
+          🌍 <span>Orbital News</span>
+        </div>
+        <p>Stay updated with the latest global news!</p>
+      </div>
+    </ng-template>
+  </div>
 
 
   <!-- Modal (Appears When Clicking the Icon) -->
@@ -61,7 +64,7 @@
       <img *ngIf="modalArticle.urlToImage" [src]="modalArticle.urlToImage" alt="{{ modalArticle.title }}"
         class="modal-thumbnail">
       <p class="modal-content">
-        {{ getFullText(modalArticle) }}
+        {{ modalArticle.content }}
       </p>
 
       <a [href]="modalArticle.url" target="_blank">View Full Article</a>
@@ -74,8 +77,15 @@
     <i class="fas fa-sign-in-alt"></i> <!-- Login icon -->
     <span>Login</span>
     <div class="logo">
-      🌍 <span>GlobePulse News</span>
+      🌍 <span>ON - Orbital News</span>
     </div>
+  </div>
+
+  <!-- Ads Section at Bottom Right -->
+  <div class="ads-bottom">
+    <div class="ad-box">🌍 Ad 1: Travel Deals</div>
+    <div class="ad-box">📰 Ad 2: News Subscription</div>
+    <div class="ad-box">💻 Ad 3: Tech Offers</div>
   </div>
 
 </div>

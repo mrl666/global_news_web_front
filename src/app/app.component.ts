@@ -50,8 +50,24 @@ export class AppComponent implements OnInit {
       const camera = this.viewer.camera;
       const globe = scene.globe;
 
+      // Minimum zoom distance (how close user can zoom in)
+      const minZoom = 10000000; 
+
+      // Maximum zoom distance (how far out user can zoom)
+      const maxZoom = 30000000; 
+
+     // Corrected property names
+    scene.screenSpaceCameraController.minimumZoomDistance = minZoom;
+    scene.screenSpaceCameraController.maximumZoomDistance = maxZoom;
+    
+      // Optionally, prevent zooming beyond these limits
+      scene.screenSpaceCameraController.zoomEventTypes = [
+        Cesium.CameraEventType.WHEEL,
+        Cesium.CameraEventType.PINCH
+      ];
+
       let lastExecutionTime = 0;
-      const interval = 5000; // 5 seconds
+      const interval = 12000; 
 
       this.viewer.clock.onTick.addEventListener(() => {
         const currentTime = Date.now();
@@ -260,13 +276,6 @@ export class AppComponent implements OnInit {
   // Close modal
   closeModal(event: Event) {
     this.modalArticle = null;
-  }
-
-  getFullText(article: any): string {
-    if (!article.content) {
-      return article.description || "No additional content available.";
-    }
-    return article.content.includes("[+") ? article.description || article.content : article.content;
   }
 
   addNewsPulseEffect(latitude: number, longitude: number) {

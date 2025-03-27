@@ -34,7 +34,7 @@ export class NewsService {
         }
   
         console.log(`Finally fetching news for: ${query}`);
-        const url = `${this.newsApiUrl}?q=${encodeURIComponent(query)}&language=en&apiKey=${this.apiKey}`;
+        const url = `${this.newsApiUrl}?q=${encodeURIComponent(query)}&language=en&apiKey=${this.apiKey}`; //`https://google.com`;
   
         // ✅ RETURN the HTTP request as an Observable
         return this.http.get(url);
@@ -49,7 +49,7 @@ export class NewsService {
   }
 
   getFallbackNews(query: string): Observable<any> {
-    const url = `${this.newsApiUrl}?q=${encodeURIComponent(query)}&language=en&apiKey=${this.apiKey}`;
+    const url = `${this.newsApiUrl}?q=${encodeURIComponent(query)}&language=en&apiKey=${this.apiKey}`; //`https://google.com`; 
     return this.http.get(url);
   }
   

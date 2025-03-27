@@ -32,7 +32,7 @@ body {
   /* Softer shadow */
   padding: 10px;
   /* More padding */
-  width: 420px;
+  width: 520px;
   /* Slightly wider */
   z-index: 10;
   backdrop-filter: blur(5px);
@@ -40,9 +40,8 @@ body {
 }
 
 .latest-news h3 {
-  font-size: 15px;
-  /* Larger heading */
-  margin-bottom: 15px;
+  font-size: 20px;
+  margin-top: 8px;
   color: #0056b3;
   /* Darker blue */
   font-weight: 600;
@@ -95,7 +94,7 @@ body {
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
   /* Softer shadow */
   padding: 10px;
-  width: 420px;
+  width: 520px;
   /* Match news panel width */
   height: 250px;
   /* Slightly taller */
@@ -128,11 +127,10 @@ body {
 .login-icon {
   position: fixed;
   /* Ensures it's always in the same spot */
-  bottom: 10px;
-  /* Adjusts position at the bottom */
-  right: 60px;
+  top: 10px;
+  right: 200px;
   /* Adjusts position on the right */
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(139, 138, 138, 0.7);
   /* Adds a semi-transparent background */
   color: white;
   /* Makes text visible */
@@ -154,7 +152,7 @@ body {
 }
 
 .login-icon:hover {
-  background: #413b33;
+  background: #8a8085;
   /* Highlight on hover */
   color: #000;
 }
@@ -176,6 +174,25 @@ body {
   font-weight: bold;
   color: #007BFF;
   /* Blue color */
+}
+
+.logo-header {
+  font-size: 20px;
+  font-weight: bold;
+  color: #007BFF;
+  /* Blue color */
+}
+
+.news-header {
+  display: flex;
+  align-items: center;
+  /* Aligns vertically */
+  justify-content: center;
+  /* Aligns horizontally */
+  gap: 10px;
+  /* Adds space between h3 and logo */
+  text-align: center;
+  /* Ensures text inside aligns properly */
 }
 
 .scrollable-container {
@@ -206,7 +223,7 @@ li {
 
 .article-thumbnail {
   max-width: 100%;
-  max-height: 100px;
+  max-height: 50%;
   /* Adjust this value to control the height */
   object-fit: cover;
   /* Ensures the image fills the space properly */
@@ -259,8 +276,8 @@ a:hover {
   background: white;
   padding: 20px;
   border-radius: 5px;
-  width: 50%;
-  max-width: 500px;
+  width: 100%; /* Changed from 50% to 100% */
+  max-width: 1000px; /* Doubled from 500px to 1000px */
   position: relative;
   text-align: center;
 }
@@ -278,7 +295,7 @@ a:hover {
 .modal-thumbnail {
   max-width: 100%;
   /* Ensure it does not exceed the modal width */
-  max-height: 200px;
+  max-height: 400px;
   /* Adjust this value to fit your design */
   width: auto;
   height: auto;
@@ -302,4 +319,33 @@ a:hover {
   /* Justify text for a clean look */
   padding: 10px;
   /* Add some spacing */
+}
+
+/* Positioning ads at the bottom right */
+.ads-bottom {
+  position: fixed;
+  bottom: 40px;
+  right: 110px;
+  width: 400px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+  /* Ensures it's above other elements */
+  display: block !important;
+  /* Forces it to be visible */
+  border: 2px solid red;
+  /* Add a border to check visibility */
+}
+
+/* Style each ad box */
+.ad-box {
+  background-color: white;
+  padding: 8px;
+  margin: 5px 0;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
 }
